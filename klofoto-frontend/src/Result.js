@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Box } from '@material-ui/core';
 import { Redirect } from "react-router-dom";
 
 import { getDownloadUrl } from './api';
@@ -37,7 +38,21 @@ class Result extends React.Component {
     const url = getDownloadUrl("after", id);
     if (this.state.loading) {
       return (
-        <CircularProgress />
+        <Box width="100vw" height="100vh" style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+          }}
+        >
+          <CircularProgress />
+          <Box mt={5} style={{ fontWeight: 'lighter' }}>
+          Loading...
+          </Box>
+          <Box mt={2} style={{ fontWeight: 'lighter' }}>
+          The process might takes a few minutes if the photo is big.
+          </Box>
+        </Box>
       )
     } else {
       return (
