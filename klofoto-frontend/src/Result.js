@@ -16,7 +16,7 @@ class Result extends React.Component {
 
   check() {
     const id = this.props.match.params.id;
-    const url = getDownloadUrl("before", id);
+    const url = getDownloadUrl("after", id);
     console.log(this.state.loading);
     fetch(url, {
       method: 'HEAD',
@@ -34,7 +34,7 @@ class Result extends React.Component {
 
   render() {
     const id = this.props.match.params.id;
-    const url = getDownloadUrl("before", id);
+    const url = getDownloadUrl("after", id);
     if (this.state.loading) {
       return (
         <CircularProgress />
