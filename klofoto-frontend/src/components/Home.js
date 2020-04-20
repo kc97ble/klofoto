@@ -14,7 +14,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
-import { withStyles } from "@material-ui/styles";
 import { DropzoneArea } from "material-ui-dropzone";
 
 import { uploadImage } from "../api";
@@ -25,30 +24,15 @@ import {
   DEFAULT_QUALITY,
 } from "../config";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: "2em",
-    margin: "1em 0",
-  },
-  dropzone: {
-    width: "100%",
-  },
-  fieldset: {
-    width: "100%",
-  },
-  formControl: {
-    margin: "2em 0",
-  },
-}));
+const useStyles = makeStyles({
+  root: { flexGrow: 1 },
+  menuButton: { marginRight: "1em" },
+  title: { flexGrow: 1 },
+  paper: { padding: "2em", margin: "1em 0" },
+  dropzone: { width: "100%" },
+  fieldset: { width: "100%" },
+  formControl: { margin: "2em 0" },
+});
 
 const DEFAULT_FORM = {
   style: DEFAULT_STYLE,
@@ -188,55 +172,42 @@ function UploadForm(props) {
   );
 }
 
-class Home extends React.Component {
-  state = {
-    files: [],
-  };
-
-  dropzoneAreaChanged = (files) => {
-    this.setState({ files: files });
-  };
-
-  submit = (e) => {
-    const file = this.state.files[0];
-    uploadImage(file).then((result) => {
-      const { /* before, after, */ id } = result;
-      window.location.href = window.location.href + "result/" + id;
-    });
-  };
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Box>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Cloud Photo Stylizer
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Box my={5}>
-          <Container maxWidth="md">
-            <Box my={5}>
-              Cloud Photo Stylizer is a free application which converts your
-              photos into cool photos!
-            </Box>
-            <UploadForm />
-          </Container>
-        </Box>
-      </Box>
-    );
-  }
+function TopBar() {
+  const classes = useStyles();
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="menu"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" className={classes.title}>
+          Cloud Photo Stylizer
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
 }
 
-export default withStyles(useStyles)(Home);
+function Home() {
+  return (
+    <Box>
+      <TopBar />
+      <Box my={5}>
+        <Container maxWidth="md">
+          <Box my={5}>
+            Cloud Photo Stylizer is a free application which converts your
+            photos into cool photos!
+          </Box>
+          <UploadForm />
+        </Container>
+      </Box>
+    </Box>
+  );
+}
+
+export default Home;
