@@ -5,12 +5,15 @@ const UPLOAD_ENDPOINT =
 const DOWNLOAD_ENDPOINT =
   "https://terraform-20200418031709616800000001.s3-ap-southeast-1.amazonaws.com/";
 
-export function getUploadUrl(folder, file, email, phone) {
+export function getUploadUrl(folder, fileName, options) {
+  const { email, phone, style, iterations } = options;
   const params = {
     folder: folder,
-    file: file,
+    file: fileName,
     ...(email ? { email: email } : {}),
     ...(phone ? { telephone: phone } : {}),
+    ...(style ? { style: style } : {}),
+    ...(iterations ? { iter: iterations } : {}),
   };
   const paramString = new URLSearchParams(params).toString();
   return UPLOAD_ENDPOINT + "?" + paramString;
@@ -33,10 +36,10 @@ function getFileExt(filename) {
   }
 }
 
-export function uploadImage(file, email, phone) {
+export function uploadImage(file, options) {
   const fileName = uuidv4() + getFileExt(file.name);
   const folderName = "toProcess";
-  return fetch(getUploadUrl(folderName, fileName, email, phone))
+  return fetch(getUploadUrl(folderName, fileName, options))
     .then((response) => response.json())
     .then((data) => {
       const {

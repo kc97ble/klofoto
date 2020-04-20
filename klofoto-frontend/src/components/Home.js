@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { AppBar, Button, IconButton, Toolbar } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Toolbar,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import { Box, Paper, Container } from "@material-ui/core";
 import { Checkbox, FormControl, FormControlLabel } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -9,7 +17,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/styles";
 import { DropzoneArea } from "material-ui-dropzone";
 
-import { uploadImage } from "./api";
+import { uploadImage } from "../api";
+import {
+  STYLE_LIST,
+  QUALITY_LIST,
+  DEFAULT_STYLE,
+  DEFAULT_QUALITY,
+} from "../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,48 +35,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-}));
-
-const DEFAULT_FORM = {
-  useEmail: false,
-  email: "",
-  usePhone: false,
-  phone: "",
-};
-
-function Options(props) {
-  const defaultFormHook = useState(DEFAULT_FORM);
-  const [form, setForm] = props.formHook || defaultFormHook;
-  const setField = (name, value) => setForm({ ...form, [name]: value });
-  return (
-    <>
-      <FormControlLabel
-        control={<Checkbox checked={form.useEmail} />}
-        label="Send the resulted photo to my email"
-        onChange={(event) => setField("useEmail", event.target.checked)}
-      />
-      <TextField
-        placeholder="Email"
-        value={form.email}
-        onChange={(event) => setField("email", event.target.value)}
-        disabled={!form.useEmail}
-      />
-      <FormControlLabel
-        control={<Checkbox checked={form.usePhone} />}
-        label="Send me an SMS when the photo is processed"
-        onChange={(event) => setField("usePhone", event.target.checked)}
-      />
-      <TextField
-        placeholder="Phone number"
-        value={form.phone}
-        onChange={(event) => setField("phone", event.target.value)}
-        disabled={!form.usePhone}
-      />
-    </>
-  );
-}
-
-const useUploadFormStyles = makeStyles({
   paper: {
     padding: "2em",
     margin: "1em 0",
@@ -73,11 +45,84 @@ const useUploadFormStyles = makeStyles({
   fieldset: {
     width: "100%",
   },
-});
+  formControl: {
+    margin: "2em 0",
+  },
+}));
+
+const DEFAULT_FORM = {
+  style: DEFAULT_STYLE,
+  iterations: DEFAULT_QUALITY,
+  useEmail: false,
+  email: "",
+  usePhone: false,
+  phone: "",
+};
+
+function Options(props) {
+  const classes = useStyles();
+  const defaultFormHook = useState(DEFAULT_FORM);
+  const [form, setForm] = props.formHook || defaultFormHook;
+  const setField = (name, value) => setForm({ ...form, [name]: value });
+  return (
+    <>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="style-label">Style</InputLabel>
+        <Select
+          labelId="style-label"
+          value={form.style}
+          onChange={(event) => setField("style", event.target.value)}
+        >
+          {STYLE_LIST.map((item) => (
+            <MenuItem value={item.value}>{item.label}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="iterations-label">Quality</InputLabel>
+        <Select
+          labelId="iterations-label"
+          value={form.iterations}
+          onChange={(event) => setField("iterations", event.target.value)}
+        >
+          {QUALITY_LIST.map((item) => (
+            <MenuItem value={item.value}>{item.label}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <FormControlLabel
+          control={<Checkbox checked={form.useEmail} />}
+          label="Send the resulted photo to my email"
+          onChange={(event) => setField("useEmail", event.target.checked)}
+        />
+        <TextField
+          placeholder="Email"
+          value={form.email}
+          onChange={(event) => setField("email", event.target.value)}
+          disabled={!form.useEmail}
+        />
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <FormControlLabel
+          control={<Checkbox checked={form.usePhone} />}
+          label="Send me an SMS when the photo is processed"
+          onChange={(event) => setField("usePhone", event.target.checked)}
+        />
+        <TextField
+          placeholder="Phone number"
+          value={form.phone}
+          onChange={(event) => setField("phone", event.target.value)}
+          disabled={!form.usePhone}
+        />
+      </FormControl>
+    </>
+  );
+}
 
 function Dropzone(props) {
   const { setFile } = props;
-  const classes = useUploadFormStyles();
+  const classes = useStyles();
 
   return (
     <Box marginBottom="2em">
@@ -94,8 +139,8 @@ function Dropzone(props) {
   );
 }
 
-function submit(file, email, phone) {
-  uploadImage(file, email, phone).then((result) => {
+function submit(file, options) {
+  uploadImage(file, options).then((result) => {
     const { id } = result;
     window.location.href = window.location.href + "result/" + id;
   });
@@ -111,11 +156,12 @@ function SubmitButton(props) {
         fullWidth={true}
         disabled={!file}
         onClick={() =>
-          submit(
-            file,
-            form.useEmail ? form.email : null,
-            form.usePhone ? form.phone : null
-          )
+          submit(file, {
+            email: form.useEmail ? form.email : null,
+            phone: form.usePhone ? form.phone : null,
+            style: form.style || null,
+            iterations: form.iterations || null,
+          })
         }
       >
         Upload
@@ -125,7 +171,7 @@ function SubmitButton(props) {
 }
 
 function UploadForm(props) {
-  const classes = useUploadFormStyles();
+  const classes = useStyles();
   const defaultFormHook = useState(DEFAULT_FORM);
   const [form, setForm] = props.formHook || defaultFormHook;
   const [file, setFile] = useState(null);
