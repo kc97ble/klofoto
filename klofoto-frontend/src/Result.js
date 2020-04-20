@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Box } from '@material-ui/core';
-import { Redirect } from "react-router-dom";
 
 import { getDownloadUrl } from './api';
 
@@ -24,7 +22,7 @@ class Result extends React.Component {
       // mode: 'no-cors'
     })
     .then(response => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         this.setState({
           loading: false
         })
