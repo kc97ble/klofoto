@@ -1,18 +1,11 @@
 import React, { useState } from "react";
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@material-ui/core";
+// import { AppBar, IconButton, Toolbar } from "@material-ui/core";
+import { Button, InputLabel, Select, MenuItem } from "@material-ui/core";
 import { Box, Paper, Container } from "@material-ui/core";
 import { Checkbox, FormControl, FormControlLabel } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import MenuIcon from "@material-ui/icons/Menu";
+// import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
 import { DropzoneArea } from "material-ui-dropzone";
 
@@ -23,6 +16,7 @@ import {
   DEFAULT_STYLE,
   DEFAULT_QUALITY,
 } from "../config";
+import bannerBackground from "./banner.jpg";
 
 const useStyles = makeStyles({
   root: { flexGrow: 1 },
@@ -172,38 +166,84 @@ function UploadForm(props) {
   );
 }
 
-function TopBar() {
-  const classes = useStyles();
+// function TopBar() {
+//   const classes = useStyles();
+//   return (
+//     <AppBar position="static">
+//       <Toolbar>
+//         <IconButton
+//           edge="start"
+//           className={classes.menuButton}
+//           color="inherit"
+//           aria-label="menu"
+//         >
+//           <MenuIcon />
+//         </IconButton>
+//         <Typography variant="h6" className={classes.title}>
+//           Cloud Photo Stylizer
+//         </Typography>
+//       </Toolbar>
+//     </AppBar>
+//   );
+// }
+
+function Banner() {
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color="inherit"
-          aria-label="menu"
+    <Box
+      style={{
+        height: "90vh",
+        backgroundColor: "black",
+        background: `url(${bannerBackground})`,
+        backgroundSize: "cover",
+      }}
+    >
+      <Box style={{ padding: "10vh 2em", height: "70vh" }}>
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            width: "100%",
+            height: "100%",
+          }}
         >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" className={classes.title}>
-          Cloud Photo Stylizer
-        </Typography>
-      </Toolbar>
-    </AppBar>
+          <Typography
+            variant="h2"
+            style={{ color: "white", fontWeight: "bold", margin: "0.5em" }}
+          >
+            Cloud Photo Stylizer
+          </Typography>
+          <Typography
+            variant="h4"
+            style={{ color: "white", fontWeight: "bold" }}
+          >
+            Stylize your photos
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
 function Home() {
   return (
-    <Box>
-      <TopBar />
-      <Box my={5}>
+    <Box style={{ backgroundColor: "#eee" }}>
+      <Box>
+        <Banner />
+      </Box>
+      <Box
+        style={{
+          position: "relative",
+          top: "-10vh",
+          width: "100%",
+          paddingBottom: "20vh",
+        }}
+      >
         <Container maxWidth="md">
-          <Box my={5}>
-            Cloud Photo Stylizer is a free application which converts your
-            photos into cool photos!
+          <Box>
+            <UploadForm />
           </Box>
-          <UploadForm />
         </Container>
       </Box>
     </Box>
