@@ -210,7 +210,7 @@ function Banner() {
         >
           <Typography
             variant="h2"
-            style={{ color: "white", fontWeight: "bold", margin: "0.5em" }}
+            style={{ color: "white", fontWeight: "bold", margin: "0.5em 0" }}
           >
             Cloud Photo Stylizer
           </Typography>
