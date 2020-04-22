@@ -23,7 +23,7 @@ Backend is divided in two folders:
 
 * `klofoto-ml-engine`: Deep learning engine
 
-* `klofoto-serverless-backend`: Cloud infrastructure
+* `klofoto-backend`: Cloud infrastructure
 
 ### Deep learning engine
 
@@ -39,4 +39,4 @@ To run `klofoto-ml-engine`, follow these steps:
 
 ### Cloud infrastructure
 
-See `klofoto-serverless-backend/readme.md` and the report for more details.
+See `klofoto-backend/readme.md` and the report for more details.
