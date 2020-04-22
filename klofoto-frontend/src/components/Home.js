@@ -107,6 +107,7 @@ function Dropzone(props) {
       <DropzoneArea
         className={classes.dropzone}
         filesLimit={1}
+        maxFileSize={10000000}
         onChange={(files) => {
           const result = files[0] || null;
           console.log(result);
