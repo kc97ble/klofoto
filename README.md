@@ -21,8 +21,22 @@ yarn start
 
 Backend is divided in two folders:
 
-* `klofoto-serverless-backend`: AWS Lambda functions
+* `klofoto-ml-engine`: Deep learning engine
 
-* `klofoto-ml-engine`: Python scripts to stylize photos
+* `klofoto-serverless-backend`: Cloud infrastructure
 
-See `klofoto-serverless-backend/readme.md` for more details.
+### Deep learning engine
+
+To run `klofoto-ml-engine`, follow these steps:
+
+1. Launch a Deep Learning AMI
+
+2. Download `get_sqs.py` and `styleTransfer.py`
+
+3. Run command `source activate tensorflow_p36` to activate the virtual environment.
+
+4. Run `sqs message listener get_sqs.py`
+
+### Cloud infrastructure
+
+See `klofoto-serverless-backend/readme.md` and the report for more details.
