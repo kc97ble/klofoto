@@ -1,35 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Home from "./Home";
-import Result from "./Result";
+import React from "react";
+import Home from "./components/Home";
+import Result from "./components/Result";
 import About from "./About";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 class App extends React.Component {
-
   render() {
     return (
       <Router>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/about" component={About} />
-        <Route path="/result/:id" component={Result} />
-        <Route path="*">
-          <pre>Not Found</pre>
-        </Route>
-      </Switch>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/about" component={About} />
+          <Route path="/result/:id" component={Result} />
+          <Route path="*">
+            <pre>Not Found</pre>
+          </Route>
+        </Switch>
       </Router>
-    )
+    );
   }
-
 }
 
 export default App;
